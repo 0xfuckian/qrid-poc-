@@ -32,7 +32,7 @@ export default function TipJar() {
     // 2. Generate the Solana Pay URL
     const url = encodeURL({
       recipient: walletAddress as any, 
-      amount: amount,
+      amount: amount as any,
       splToken: usdcMint as any,
       label: `Qrid.me PoC Tip Jar (${finalDid})`,
       message: 'Thanks for the tip!',
