@@ -21,19 +21,16 @@ export default function TipJar() {
   const amount = new BigNumber(1);
 
   const generateTipQR = () => {
-    // 1. Validate the wallet address is provided by the user
     if (!walletAddress.trim()) {
       alert("Please enter a Solana Devnet wallet address first!");
       return;
     }
 
-    // 2. Construct the full DID using whatever name they typed
     const finalDid = didName.trim() ? `did:qrid:${didName.trim()}` : 'did:qrid:anonymous';
     
-    // 3. Generate the Solana Pay URL using their inputs
     const url = encodeURL({
       recipient: walletAddress.trim() as any, 
-      amount: amount as any,
+      amount: amount as any, 
       splToken: usdcMint as any,
       label: `Qrid.me PoC Tip Jar (${finalDid})`,
       message: 'Thanks for the tip!',
@@ -56,16 +53,20 @@ export default function TipJar() {
             <label style={{ fontWeight: 'bold', display: 'block', marginBottom: '5px' }}>Create Your Qrid Identity:</label>
             <div style={{ 
               display: 'flex', alignItems: 'center', border: '1px solid #ccc', 
-              borderRadius: '5px', padding: '0 10px', backgroundColor: '#f9f9f9' 
+              borderRadius: '5px', padding: '0 10px', backgroundColor: '#f9f9f9',
+              gap: '0px'
             }}>
-              <span style={{ color: '#888', fontSize: '16px', userSelect: 'none' }}>did:qrid:</span>
-              <input 
+              <span style={{ color: '#888', fontSize: '16px', userSelect: 'none' }}>did:qrid:</span><input 
                 type="text" 
-                placeholder="ian" 
+                placeholder="yourname" 
                 value={didName}
                 onChange={(e) => setDidName(e.target.value.replace(/[^a-zA-Z0-9_-]/g, ''))} 
+                autoComplete="off"
+                autoCorrect="off"
+                autoCapitalize="none"
+                spellCheck="false"
                 style={{ 
-                  border: 'none', outline: 'none', padding: '10px 5px', 
+                  border: 'none', outline: 'none', padding: '10px 0 10px 5px', 
                   fontSize: '16px', flex: 1, backgroundColor: 'transparent', color: '#000' 
                 }}
               />
@@ -85,6 +86,10 @@ export default function TipJar() {
               placeholder="Paste your Phantom Devnet address here..." 
               value={walletAddress}
               onChange={(e) => setWalletAddress(e.target.value)}
+              autoComplete="off"
+              autoCorrect="off"
+              autoCapitalize="none"
+              spellCheck="false"
               style={{ 
                 width: '100%', padding: '10px', fontSize: '16px', 
                 borderRadius: '5px', border: '1px solid #ccc', boxSizing: 'border-box' 
