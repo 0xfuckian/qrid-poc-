@@ -2,17 +2,12 @@
 
 import { useState } from 'react';
 import { QRCodeSVG } from 'qrcode.react';
-import { encodeURL } from '@solana/pay';
-import BigNumber from 'bignumber.js';
 
 export default function TipJar() {
   const [didName, setDidName] = useState(''); 
   const [walletAddress, setWalletAddress] = useState('');
   const [qrUrl, setQrUrl] = useState('');
   const [resolvedDid, setResolvedDid] = useState('');
-  
-  const usdcMint = '4zMMC9srt5i5X14GAgXhaHii3GnPAEERYPJgZJDncDU';
-  const amount = new BigNumber(1);
 
   const generateTipQR = () => {
     if (!walletAddress.trim()) {
@@ -22,15 +17,9 @@ export default function TipJar() {
 
     const finalDid = didName.trim() ? `did:qrid:${didName.trim()}` : 'did:qrid:anonymous';
     
-    // REMOVED: label and message to fix Phantom's parsing bug
-    const url = encodeURL({
-      recipient: walletAddress.trim() as any, 
-      amount: amount as any, 
-      splToken: usdcMint as any,
-    });
-    
+    // Just the raw address. No Solana Pay URL, no extra parameters.
     setResolvedDid(finalDid);
-    setQrUrl(url.toString());
+    setQrUrl(walletAddress.trim());
   };
 
   return (
@@ -111,7 +100,7 @@ export default function TipJar() {
           </p>
           <QRCodeSVG value={qrUrl} size={256} />
           <p style={{ marginTop: '10px', fontSize: '12px', color: '#666' }}>
-            Scan with Phantom to tip 1 USDC
+            Scan with Phantom to get the address, then type 1 USDC
           </p>
           <button 
             onClick={() => { setQrUrl(''); setResolvedDid(''); setWalletAddress(''); setDidName(''); }}
