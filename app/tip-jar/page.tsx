@@ -32,7 +32,7 @@ export default function TipJar() {
     // 2. Generate the Solana Pay URL
     const url = encodeURL({
       recipient: walletAddress as any, 
-      amount: amount as any,
+      amount: amount,
       splToken: usdcMint as any,
       label: `Qrid.me PoC Tip Jar (${finalDid})`,
       message: 'Thanks for the tip!',
@@ -79,7 +79,7 @@ export default function TipJar() {
               />
             </div>
             <p style={{ fontSize: '12px', color: '#888', marginTop: '5px' }}>
-              This will be your permanent scannable identity (e.g., did:qrid:ian).
+              Allowed: Letters, numbers, hyphens (-), and underscores (_). No spaces or special characters.
             </p>
           </div>
 
