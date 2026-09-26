@@ -22,12 +22,11 @@ export default function TipJar() {
 
     const finalDid = didName.trim() ? `did:qrid:${didName.trim()}` : 'did:qrid:anonymous';
     
+    // REMOVED: label and message to fix Phantom's parsing bug
     const url = encodeURL({
       recipient: walletAddress.trim() as any, 
       amount: amount as any, 
       splToken: usdcMint as any,
-      label: `Qrid.me PoC Tip Jar (${finalDid})`,
-      message: 'Thanks for the tip!',
     });
     
     setResolvedDid(finalDid);
@@ -61,7 +60,7 @@ export default function TipJar() {
                 spellCheck="false"
                 style={{ 
                   border: 'none', outline: 'none', 
-                  padding: '10px 0', /* <-- THIS REMOVES THE SPACE */
+                  padding: '10px 0', /* Fixes the space */
                   fontSize: '16px', flex: 1, backgroundColor: 'transparent', color: '#000' 
                 }}
               />
