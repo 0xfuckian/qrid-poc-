@@ -6,8 +6,8 @@ import { encodeURL } from '@solana/pay';
 import BigNumber from 'bignumber.js';
 
 export default function TipJar() {
-  // State for the form
-  const [didName, setDidName] = useState(''); // e.g., "ian"
+  // State for the form inputs
+  const [didName, setDidName] = useState(''); 
   const [walletAddress, setWalletAddress] = useState('');
   
   // State for the output
@@ -21,17 +21,18 @@ export default function TipJar() {
   const amount = new BigNumber(1);
 
   const generateTipQR = () => {
-    if (!walletAddress) {
+    // 1. Validate the wallet address is provided by the user
+    if (!walletAddress.trim()) {
       alert("Please enter a Solana Devnet wallet address first!");
       return;
     }
 
-    // 1. Construct the full DID using the user's custom name
+    // 2. Construct the full DID using whatever name they typed
     const finalDid = didName.trim() ? `did:qrid:${didName.trim()}` : 'did:qrid:anonymous';
     
-    // 2. Generate the Solana Pay URL
+    // 3. Generate the Solana Pay URL using their inputs
     const url = encodeURL({
-      recipient: walletAddress as any, 
+      recipient: walletAddress.trim() as any, 
       amount: amount as any,
       splToken: usdcMint as any,
       label: `Qrid.me PoC Tip Jar (${finalDid})`,
@@ -50,31 +51,22 @@ export default function TipJar() {
       {!qrUrl ? (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', marginTop: '30px' }}>
           
-          {/* DID Username Input */}
+          {/* Input Box 1: DID Name */}
           <div style={{ textAlign: 'left' }}>
             <label style={{ fontWeight: 'bold', display: 'block', marginBottom: '5px' }}>Create Your Qrid Identity:</label>
             <div style={{ 
-              display: 'flex', 
-              alignItems: 'center', 
-              border: '1px solid #ccc', 
-              borderRadius: '5px', 
-              padding: '0 10px', 
-              backgroundColor: '#f9f9f9' 
+              display: 'flex', alignItems: 'center', border: '1px solid #ccc', 
+              borderRadius: '5px', padding: '0 10px', backgroundColor: '#f9f9f9' 
             }}>
               <span style={{ color: '#888', fontSize: '16px', userSelect: 'none' }}>did:qrid:</span>
               <input 
                 type="text" 
                 placeholder="ian" 
                 value={didName}
-                onChange={(e) => setDidName(e.target.value.replace(/[^a-zA-Z0-9_-]/g, ''))} // Sanitize input
+                onChange={(e) => setDidName(e.target.value.replace(/[^a-zA-Z0-9_-]/g, ''))} 
                 style={{ 
-                  border: 'none', 
-                  outline: 'none', 
-                  padding: '10px 5px', 
-                  fontSize: '16px', 
-                  flex: 1, 
-                  backgroundColor: 'transparent',
-                  color: '#000'
+                  border: 'none', outline: 'none', padding: '10px 5px', 
+                  fontSize: '16px', flex: 1, backgroundColor: 'transparent', color: '#000' 
                 }}
               />
             </div>
@@ -83,21 +75,19 @@ export default function TipJar() {
             </p>
           </div>
 
-          {/* Wallet Address Input */}
+          {/* Input Box 2: Wallet Address */}
           <div style={{ textAlign: 'left' }}>
-            <label style={{ fontWeight: 'bold', display: 'block', marginBottom: '5px' }}>Receiving Wallet Address (Devnet):</label>
+            <label style={{ fontWeight: 'bold', display: 'block', marginBottom: '5px' }}>
+              Receiving Wallet Address (Devnet):
+            </label>
             <input 
               type="text" 
               placeholder="Paste your Phantom Devnet address here..." 
               value={walletAddress}
               onChange={(e) => setWalletAddress(e.target.value)}
               style={{ 
-                width: '100%', 
-                padding: '10px', 
-                fontSize: '16px', 
-                borderRadius: '5px', 
-                border: '1px solid #ccc',
-                boxSizing: 'border-box'
+                width: '100%', padding: '10px', fontSize: '16px', 
+                borderRadius: '5px', border: '1px solid #ccc', boxSizing: 'border-box' 
               }}
             />
           </div>
@@ -105,14 +95,8 @@ export default function TipJar() {
           <button 
             onClick={generateTipQR}
             style={{ 
-              padding: '15px 30px', 
-              fontSize: '18px', 
-              cursor: 'pointer', 
-              background: '#000', 
-              color: '#fff', 
-              border: 'none', 
-              borderRadius: '5px', 
-              marginTop: '10px' 
+              padding: '15px 30px', fontSize: '18px', cursor: 'pointer', 
+              background: '#000', color: '#fff', border: 'none', borderRadius: '5px', marginTop: '10px' 
             }}
           >
             Resolve DID & Generate Tip QR
@@ -131,7 +115,7 @@ export default function TipJar() {
             Scan with Phantom to tip 1 USDC
           </p>
           <button 
-            onClick={() => { setQrUrl(''); setResolvedDid(''); }}
+            onClick={() => { setQrUrl(''); setResolvedDid(''); setWalletAddress(''); setDidName(''); }}
             style={{ marginTop: '20px', padding: '10px', cursor: 'pointer' }}
           >
             Reset
