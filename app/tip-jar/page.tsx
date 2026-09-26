@@ -6,18 +6,12 @@ import { encodeURL } from '@solana/pay';
 import BigNumber from 'bignumber.js';
 
 export default function TipJar() {
-  // State for the form inputs
   const [didName, setDidName] = useState(''); 
   const [walletAddress, setWalletAddress] = useState('');
-  
-  // State for the output
   const [qrUrl, setQrUrl] = useState('');
   const [resolvedDid, setResolvedDid] = useState('');
   
-  // USDC Devnet Mint Address
   const usdcMint = '4zMMC9srt5i5X14GAgXhaHii3GnPAEERYPJgZJDncDU';
-  
-  // 1 USDC (6 decimals)
   const amount = new BigNumber(1);
 
   const generateTipQR = () => {
@@ -53,12 +47,12 @@ export default function TipJar() {
             <label style={{ fontWeight: 'bold', display: 'block', marginBottom: '5px' }}>Create Your Qrid Identity:</label>
             <div style={{ 
               display: 'flex', alignItems: 'center', border: '1px solid #ccc', 
-              borderRadius: '5px', padding: '0 10px', backgroundColor: '#f9f9f9',
-              gap: '0px'
+              borderRadius: '5px', padding: '0 10px', backgroundColor: '#f9f9f9'
             }}>
-              <span style={{ color: '#888', fontSize: '16px', userSelect: 'none' }}>did:qrid:</span><input 
+              <span style={{ color: '#888', fontSize: '16px' }}>did:qrid:</span>
+              <input 
                 type="text" 
-                placeholder="yourname" 
+                placeholder="ian" 
                 value={didName}
                 onChange={(e) => setDidName(e.target.value.replace(/[^a-zA-Z0-9_-]/g, ''))} 
                 autoComplete="off"
@@ -66,7 +60,8 @@ export default function TipJar() {
                 autoCapitalize="none"
                 spellCheck="false"
                 style={{ 
-                  border: 'none', outline: 'none', padding: '10px 0 10px 5px', 
+                  border: 'none', outline: 'none', 
+                  padding: '10px 0', /* <-- THIS REMOVES THE SPACE */
                   fontSize: '16px', flex: 1, backgroundColor: 'transparent', color: '#000' 
                 }}
               />
